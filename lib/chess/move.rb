@@ -15,5 +15,14 @@ module Chess
     def delta
       to - from
     end
+
+    def perform(board)
+      board.moves << self
+
+      piece.x = to.x
+      piece.y = to.y
+
+      true
+    end
   end
 end

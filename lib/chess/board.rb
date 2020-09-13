@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require "chess/piece"
+require "chess/piece_helper"
+require "chess/path"
 require "ostruct"
 
 module Chess
@@ -12,10 +13,10 @@ module Chess
     attr_reader :moves
 
     def initialize(pieces = [
-      *'RNBQKBNR'.chars.each_with_index.map { |n, x| Piece.from_notation(n, :black, x, 7) },
+      *'RNBQKBNR'.chars.each_with_index.map { |n, x| PieceHelper.piece_from(n, :black, x, 7) },
       *WIDTH.times.each_with_index.map { |x| Pawn.new(:black, x, 6) },
       *WIDTH.times.each_with_index.map { |x| Pawn.new(:white, x, 1) },
-      *'RNBQKBNR'.chars.each_with_index.map { |n, x| Piece.from_notation(n, :white, x, 0) },
+      *'RNBQKBNR'.chars.each_with_index.map { |n, x| PieceHelper.piece_from(n, :white, x, 0) },
     ])
       @pieces = pieces
       @moves = []
@@ -44,6 +45,11 @@ module Chess
 
     def add_piece(piece)
       @pieces << piece
+    end
+
+    def pieces_between(from, to)
+      path = Path.new(from, to)
+      pieces.select { |piece| path.include?(piece.position) }
     end
 
     private

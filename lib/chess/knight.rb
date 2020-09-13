@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Chess
-  class Knight
+  class Knight < Piece
     attr_accessor :x
     attr_accessor :y
 

@@ -1,16 +1,7 @@
 # frozen_string_literal: true
 
 module Chess
-  class Bishop
-    attr_accessor :x
-    attr_accessor :y
-
-    def initialize(color, x, y)
-      @color = color
-      @x = x
-      @y = y
-    end
-
+  class Bishop < Piece
     def to_s
       return '♝' if @color == :black
 

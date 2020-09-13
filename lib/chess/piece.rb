@@ -1,28 +1,37 @@
 # frozen_string_literal: true
 
-require "chess/rook"
-require "chess/knight"
-require "chess/bishop"
-require "chess/queen"
-require "chess/king"
-require "chess/pawn"
-require "chess/blank"
-
 module Chess
-  module Piece
-    PIECE_CLASSES = [
-      Chess::Rook,
-      Chess::Knight,
-      Chess::Bishop,
-      Chess::Queen,
-      Chess::King,
-      Chess::Pawn,
-      Chess::Blank,
-    ]
+  class Piece
+    attr_accessor :x
+    attr_accessor :y
+    attr_accessor :color
 
-    def self.from_notation(notation, *args)
-      klass = PIECE_CLASSES.find { |k| k.notation === notation }
-      klass.new(*args)
+    def initialize(color, x, y)
+      @color = color
+      @x = x
+      @y = y
+    end
+
+    def self.notation
+      'X'
+    end
+
+    def to_s
+      ' '
+    end
+
+    def position
+      Vector.new(x, y)
+    end
+
+    def move_to(board, destination)
+      move = Move.new(self, self.position, destination)
+      board.moves << move
+
+      self.x = destination.x
+      self.y = destination.y
+
+      true
     end
   end
 end

@@ -3,17 +3,7 @@
 require 'chess/move'
 
 module Chess
-  class Pawn
-    attr_accessor :x
-    attr_accessor :y
-    attr_accessor :color
-
-    def initialize(color, x, y)
-      @color = color
-      @x = x
-      @y = y
-    end
-
+  class Pawn < Piece
     def to_s
       return '♟' if @color == :black
 
@@ -22,10 +12,6 @@ module Chess
 
     def self.notation
       ''
-    end
-
-    def position
-      Vector.new(x, y)
     end
 
     def move_to(board, destination)
@@ -58,7 +44,7 @@ module Chess
       delta_y = destination.y - y
       delta_y.abs > 1 &&
         board.moves.select { |move| move.piece == self }.any? ||
-        board.piece_at(Vector.new(x, y + legal_y_direction))
+        board.pieces_between(position, destination).any?
     end
 
     def illegal_direction?(destination)
