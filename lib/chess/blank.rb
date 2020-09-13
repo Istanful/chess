@@ -2,7 +2,7 @@
 
 module Chess
   class Blank
-    def initialize(*args)
+    def initialize(x, y)
     end
 
     def to_s

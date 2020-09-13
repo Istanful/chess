@@ -2,8 +2,13 @@
 
 module Chess
   class Knight
-    def initialize(color)
+    attr_accessor :x
+    attr_accessor :y
+
+    def initialize(color, x, y)
       @color = color
+      @x = x
+      @y = y
     end
 
     def to_s

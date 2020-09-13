@@ -20,9 +20,9 @@ module Chess
       Chess::Blank,
     ]
 
-    def self.from_notation(notation, color = :white)
+    def self.from_notation(notation, *args)
       klass = PIECE_CLASSES.find { |k| k.notation === notation }
-      klass.new(color)
+      klass.new(*args)
     end
   end
 end

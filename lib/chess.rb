@@ -1,6 +1,7 @@
 require "chess/version"
 require "chess/board"
-require "chess/rook"
+require "chess/vector"
+require "chess/game"
 
 module Chess
   class Error < StandardError; end
