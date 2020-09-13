@@ -23,6 +23,94 @@ module Chess
           expect(text).to eql('Black move: ')
         end
       end
+
+      context 'when a pawn is to be promoted' do
+        it 'returns the prompt text' do
+          pawn = Chess::Pawn.new(:white, 0, 6)
+          board = Board.new [pawn]
+          game = described_class.new(board)
+          game.play('a7-a8')
+          game.play('Q')
+
+          text = game.prompt_text
+
+          expect(text).to eql('Promote to which piece? [QRBN]: ')
+        end
+      end
+
+      context 'when given an invalid promotion' do
+        it 'returns a descriptive message' do
+          pawn = Chess::Pawn.new(:white, 0, 6)
+          board = Board.new [pawn]
+          game = described_class.new(board)
+          game.play('a7-a8')
+          game.play('X')
+
+          text = game.prompt_text
+
+          expect(text).to eql(
+            "\"X\" is not a valid piece.\n" +
+            "Please choose one of (Q)ueen, k(N)ight, (B)ishop or (R)ook.\n" +
+            'Promote to which piece? [QRBN]: '
+          )
+        end
+      end
+
+      context 'when given an invalid move' do
+        it 'returns a descriptive message' do
+          game = described_class.new
+          game.play('shushkebab')
+
+          text = game.prompt_text
+
+          expect(text).to eql(
+            '"shushkebab" is not a valid move.' +
+            "\nWhite move: "
+          )
+        end
+      end
+
+      context 'when given an illegal move' do
+        it 'returns a descriptive message' do
+          game = described_class.new
+          game.play('a2-a6')
+
+          text = game.prompt_text
+
+          expect(text).to eql(
+            '"a2-a6" is not a legal move.' +
+            "\nWhite move: "
+          )
+        end
+      end
+
+      context 'when given a move for the opponent' do
+        it 'returns a descriptive error' do
+          game = described_class.new
+          game.play('h7-h6')
+
+          text = game.prompt_text
+
+          expect(text).to eql(
+            '"h7-h6" is not a valid move since it would move the opponent.' +
+            "\nWhite move: "
+          )
+        end
+      end
+
+      context 'when given a move where no piece exists' do
+        it 'returns a descriptive error' do
+          game = described_class.new
+          game.play('a3-a4')
+
+          text = game.prompt_text
+
+          expect(text).to eql(
+            "No piece to move for \"a3-a4\"." +
+            "\nWhite move: "
+          )
+        end
+      end
     end
 
     describe '#play' do
