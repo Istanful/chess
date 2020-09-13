@@ -2,6 +2,29 @@
 
 module Chess
   RSpec.describe Game do
+    describe '#prompt_text' do
+      context 'when it is whites turn' do
+        it 'returns the prompt text' do
+          game = described_class.new
+
+          text = game.prompt_text
+
+          expect(text).to eql('White move: ')
+        end
+      end
+
+      context 'when it is blacks turn' do
+        it 'returns the prompt text' do
+          game = described_class.new
+          game.play('a2-a3')
+
+          text = game.prompt_text
+
+          expect(text).to eql('Black move: ')
+        end
+      end
+    end
+
     describe '#play' do
       context 'when given a valid move' do
         it 'plays the given move' do

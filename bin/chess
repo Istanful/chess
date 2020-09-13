@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'chess'
+
+def prompt(game = Chess::Game.new)
+	puts "\e[H\e[2J"
+	puts game.board
+	puts
+	print game.prompt_text
+	input = gets.chomp
+	game.play(input)
+	prompt(game)
+end
+
+prompt
