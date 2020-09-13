@@ -18,7 +18,7 @@ module Chess
     def play(move_str)
       if @mode == :promote_pawn
         last_piece = @board.moves.last.piece
-        promoted_piece = Piece.from_notation(move_str, last_piece.color, last_piece.x, last_piece.y)
+        promoted_piece = PieceHelper.piece_from(move_str, last_piece.color, last_piece.x, last_piece.y)
         @board.remove_piece(Vector.new(last_piece.x, last_piece.y))
         @board.add_piece(promoted_piece)
         switch_player

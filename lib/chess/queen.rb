@@ -3,9 +3,9 @@
 module Chess
   class Queen < Piece
     def to_s
-      return '♛' if @color == :black
+      return '♕' if @color == :black
 
-      '♕'
+      '♛'
     end
 
     def self.notation
