@@ -21,5 +21,9 @@ module Chess
     def hypotenuse
       Math.sqrt(x ** 2 + y ** 2)
     end
+
+    def ==(vector)
+      vector.x == x && vector.y == y
+    end
   end
 end
