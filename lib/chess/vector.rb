@@ -18,6 +18,10 @@ module Chess
       Vector.new(x + vector.x, y + vector.y)
     end
 
+    def angle
+      Math.asin(y / hypotenuse)
+    end
+
     def hypotenuse
       Math.sqrt(x ** 2 + y ** 2)
     end
