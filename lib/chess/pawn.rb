@@ -73,9 +73,14 @@ module Chess
       capture_position = destination - Vector.new(0, legal_y_direction)
       capturable_piece = board.piece_at(capture_position)
       last_move = board.moves.last
-      last_move &&
-        last_move.piece == capturable_piece &&
+
+      return false if capturable_piece.nil?
+      return false if capturable_piece.color == color
+      return false if last_move.nil?
+
+      last_move.piece == capturable_piece &&
         last_move.delta.y.abs == 2 &&
+        capturable_piece.kind_of?(Pawn) &&
         diagonal_move?(destination)
     end
 
@@ -85,7 +90,11 @@ module Chess
     end
 
     def capturable?(board, destination)
-      board.piece_at(destination) && diagonal_move?(destination)
+      capturable_piece = board.piece_at(destination)
+      return if capturable_piece.nil?
+      return if capturable_piece.color == color
+
+      diagonal_move?(destination)
     end
 
     def legal_y_direction

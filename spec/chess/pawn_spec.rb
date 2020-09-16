@@ -113,6 +113,18 @@ module Chess
 
           expect(board.piece_at(destination)).to be_nil
         end
+
+        it 'does not perform that move if occupied by friendly piece' do
+          black_pawn = described_class.new(:black, 1, 2)
+          friendly_pawn = described_class.new(:black, 0, 1)
+          board = Board.new [black_pawn, friendly_pawn]
+          destination = Vector.new(0, 1)
+
+          black_pawn.move_to(board, destination)
+
+          expect(board.piece_at(Vector.new(1, 2))).to eql(black_pawn)
+          expect(board.piece_at(destination)).to eql(friendly_pawn)
+        end
       end
 
       context 'when moving two steps as white' do
@@ -194,6 +206,20 @@ module Chess
 
           expect(board.piece_at(Vector.new(2, 2))).to eql(black_pawn)
           expect(board.piece_at(Vector.new(2, 3))).to be_nil
+        end
+      end
+
+      context 'when opposing rook just moved 2 steps' do
+        it 'is not capture by "En Passant"' do
+          black_pawn = described_class.new(:black, 1, 3)
+          rook = Rook.new(:white, 2, 1)
+          board = Board.new [black_pawn, rook]
+
+          rook.move_to(board, Vector.new(2, 3))
+          black_pawn.move_to(board, Vector.new(2, 2))
+
+          expect(board.piece_at(Vector.new(1, 3))).to eql(black_pawn)
+          expect(board.piece_at(Vector.new(2, 3))).to eql(rook)
         end
       end
 
