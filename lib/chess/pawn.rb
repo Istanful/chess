@@ -22,6 +22,10 @@ module Chess
       move_to_position(board, destination)
     end
 
+    def threatens?(board, point)
+      diagonal_move?(point)
+    end
+
     private
 
     def move_to_position(board, destination)
@@ -91,8 +95,8 @@ module Chess
 
     def capturable?(board, destination)
       capturable_piece = board.piece_at(destination)
-      return if capturable_piece.nil?
-      return if capturable_piece.color == color
+      return false if capturable_piece.nil?
+      return false if capturable_piece.color == color
 
       diagonal_move?(destination)
     end

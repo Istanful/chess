@@ -2,6 +2,34 @@
 
 module Chess
   RSpec.describe Queen do
+    it_behaves_like 'a piece'
+
+    describe '#threatens?' do
+      context 'when given a square it can move to' do
+        it 'threatens that square' do
+          queen = described_class.new(:white, 0, 0)
+          board = Board.new [queen]
+          position = Vector.new(2, 0)
+
+          threatens = queen.threatens?(board, position)
+
+          expect(threatens).to eql(true)
+        end
+      end
+
+      context 'when given a square it can not move to' do
+        it 'does not threaten that square' do
+          queen = described_class.new(:white, 0, 0)
+          board = Board.new [queen]
+          position = Vector.new(2, 1)
+
+          threatens = queen.threatens?(board, position)
+
+          expect(threatens).to eql(false)
+        end
+      end
+    end
+
     describe '#move_to' do
       context 'when given a positive vertical move' do
         it 'moves to that square' do

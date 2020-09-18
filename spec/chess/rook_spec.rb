@@ -2,6 +2,34 @@
 
 module Chess
   RSpec.describe Rook do
+    it_behaves_like 'a piece'
+
+    describe '#threatens?' do
+      context 'when the given point is in movable path' do
+        it 'is considered to be threatening that square' do
+          rook = described_class.new(:white, 0, 0)
+          board = Board.new [rook]
+          point = Vector.new(0, 1)
+
+          threatens = rook.threatens?(board, point)
+
+          expect(threatens).to eql(true)
+        end
+      end
+
+      context 'when the given point is not in movable path' do
+        it 'is considered to not be threatening that square' do
+          rook = described_class.new(:white, 0, 0)
+          board = Board.new [rook]
+          point = Vector.new(1, 1)
+
+          threatens = rook.threatens?(board, point)
+
+          expect(threatens).to eql(false)
+        end
+      end
+    end
+
     describe '#move_to' do
       context 'when given a capturable move' do
         it 'captures that piece' do

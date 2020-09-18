@@ -2,6 +2,34 @@
 
 module Chess
   RSpec.describe Knight do
+    it_behaves_like 'a piece'
+
+    describe '#threatens?' do
+      context 'when it can move to that square' do
+        it 'threatens that square' do
+          knight = described_class.new(:white, 1, 0)
+          board = Board.new [knight]
+          point = Vector.new(2, 2)
+
+          threatens = knight.threatens?(board, point)
+
+          expect(threatens).to eql(true)
+        end
+      end
+
+      context 'when it can not move to that square' do
+        it 'does not threaten that square' do
+          knight = described_class.new(:white, 1, 0)
+          board = Board.new [knight]
+          point = Vector.new(4, 2)
+
+          threatens = knight.threatens?(board, point)
+
+          expect(threatens).to eql(false)
+        end
+      end
+    end
+
     describe '#move_to' do
       context 'when given an up->right move' do
         it 'performs that move' do

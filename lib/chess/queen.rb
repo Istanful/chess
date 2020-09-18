@@ -21,15 +21,32 @@ module Chess
     end
 
     def move_to(board, destination)
-      return false if board.pieces_between(position, destination).any?
-      return false if invalid_angle?(destination)
+      return false unless legal_destination?(board, destination)
       return true if capture(board, destination)
-      return false if board.piece_at(destination)
 
       super(board, destination)
     end
 
+    def threatens?(board, point)
+      legal_destination?(board, point)
+    end
+
     private
+
+    def legal_destination?(board, destination)
+      return false if board.pieces_between(position, destination).any?
+      return false if invalid_angle?(destination)
+      return true if capturable?(board, destination)
+
+      board.piece_at(destination).nil?
+    end
+
+    def capturable?(board, destination)
+      capturable_piece = board.piece_at(destination)
+      return false if capturable_piece.nil?
+
+      capturable_piece.color != color
+    end
 
     def capture(board, destination)
       capturable_piece = board.piece_at(destination)

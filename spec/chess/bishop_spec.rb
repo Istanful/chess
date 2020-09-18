@@ -2,6 +2,34 @@
 
 module Chess
   RSpec.describe Bishop do
+    it_behaves_like 'a piece'
+
+    describe '#threatens?' do
+      context 'when it can move to that square' do
+        it 'threatens that square' do
+          bishop = described_class.new(:white, 0, 2)
+          board = Board.new [bishop]
+          position = Vector.new(1, 3)
+
+          threatens = bishop.threatens?(board, position)
+
+          expect(threatens).to eql(true)
+        end
+      end
+
+      context 'when it can not move to that square' do
+        it 'does not threaten that square' do
+          bishop = described_class.new(:white, 0, 2)
+          board = Board.new [bishop]
+          position = Vector.new(1, 4)
+
+          threatens = bishop.threatens?(board, position)
+
+          expect(threatens).to eql(false)
+        end
+      end
+    end
+
     context 'when given an upwards diagonal move' do
       it 'performs that move' do
         bishop = described_class.new(:white, 0, 2)

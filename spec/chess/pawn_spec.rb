@@ -2,6 +2,46 @@
 
 module Chess
   RSpec.describe Pawn do
+    it_behaves_like 'a piece'
+
+    describe '#threatens?' do
+      context 'when in front of pawn' do
+        it 'does not threaten that square' do
+          pawn = described_class.new(:black, 0, 1)
+          board = Board.new [pawn]
+          point = Vector.new(0, 2)
+
+          threatens = pawn.threatens?(board, point)
+
+          expect(threatens).to eql(false)
+        end
+      end
+
+      context 'when diagonal from white pawn' do
+        it 'threatens that square' do
+          pawn = described_class.new(:white, 0, 1)
+          board = Board.new [pawn]
+          point = Vector.new(1, 2)
+
+          threatens = pawn.threatens?(board, point)
+
+          expect(threatens).to eql(true)
+        end
+      end
+
+      context 'when diagonal from black pawn' do
+        it 'threatens that square' do
+          pawn = described_class.new(:black, 0, 1)
+          board = Board.new [pawn]
+          point = Vector.new(1, 0)
+
+          threatens = pawn.threatens?(board, point)
+
+          expect(threatens).to eql(true)
+        end
+      end
+    end
+
     describe '#move_to' do
       context 'when moving one step forward as black' do
         it 'performs that move' do

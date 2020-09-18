@@ -18,21 +18,37 @@ module Chess
       Vector.new(x, y)
     end
 
-    def move_to(board, destination)
-      delta = destination - position
+    def threatens?(board, point)
+      legal_destination?(board, point)
+    end
 
-      return false if ![delta.y, delta.x].include? 0
-      return false if board.pieces_between(position, destination).any?
+    def move_to(board, destination)
+      return false unless legal_destination?(board, destination)
       return true if capture(board, destination)
-      return false if board.piece_at(destination)
 
       super(board, destination)
     end
 
-    def capture(board, destination)
+    private
+
+    def legal_destination?(board, destination)
+      delta = destination - position
+      return false unless [delta.y, delta.x].include? 0
+      return false if board.pieces_between(position, destination).any?
+      return true if capturable?(board, destination)
+
+      !board.piece_at(destination)
+    end
+
+    def capturable?(board, destination)
       capturable_piece = board.piece_at(destination)
       return false if capturable_piece.nil?
-      return false if capturable_piece.color == color
+
+      capturable_piece.color != color
+    end
+
+    def capture(board, destination)
+      return false unless capturable?(board, destination)
 
       board.remove_piece(destination)
       move_to(board, destination)

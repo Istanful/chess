@@ -14,7 +14,7 @@ module Chess
       return point.x == to.x && in_vertical_range?(point) if vertical?
       return point.y == to.y && in_horizontal_range?(point) if horizontal?
 
-      slope * point.x + intercept == point.y && in_range?(point)
+      y_at(point.x)  == point.y && in_range?(point)
     end
 
     def vertical?
@@ -25,7 +25,29 @@ module Chess
       slope.zero? && delta.x.abs.positive?
     end
 
+    def plot
+      return plot_vertical if vertical?
+
+      plot_diagonal
+    end
+
     private
+
+    def plot_diagonal
+      min, max = [from, to].sort_by { |point| point.x }
+      x_values = ((max - min).x + 1).times
+      x_values.map { |i| Vector.new(min.x + i, y_at(min.x + i)) }
+    end
+
+    def plot_vertical
+      min, max = [from, to].sort_by { |point| point.y }
+      y_values = ((max - min).y + 1).times
+      y_values.map { |i| Vector.new(min.x, min.y + i) }
+    end
+
+    def y_at(x)
+      slope * x + intercept
+    end
 
     def in_horizontal_range?(point)
       point.x > [from.x, to.x].min && point.x < [from.x, to.x].max
