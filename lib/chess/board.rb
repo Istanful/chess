@@ -10,7 +10,7 @@ module Chess
     WIDTH = 8
 
     attr_reader :pieces
-    attr_reader :moves
+    attr_accessor :moves
 
     def initialize(pieces = [
       *'RNBQKBNR'.chars.each_with_index.map { |n, x| PieceHelper.piece_from(n, :black, x, 7) },

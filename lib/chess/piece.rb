@@ -25,13 +25,8 @@ module Chess
     end
 
     def move_to(board, destination)
-      move = Move.new(self, self.position, destination)
-      board.moves << move
-
-      self.x = destination.x
-      self.y = destination.y
-
-      true
+      Move.new(self, self.position, destination)
+          .perform(board)
     end
   end
 end

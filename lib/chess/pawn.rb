@@ -19,7 +19,7 @@ module Chess
       return true if capture_by_en_passant(board, destination)
       return false if illegal_move?(board, destination)
 
-      move_to_position(board, destination)
+      super(board, destination)
     end
 
     def threatens?(board, point)
@@ -27,16 +27,6 @@ module Chess
     end
 
     private
-
-    def move_to_position(board, destination)
-      move = Move.new(self, self.position, destination)
-      board.moves << move
-
-      self.x = destination.x
-      self.y = destination.y
-
-      true
-    end
 
     def illegal_move?(board, destination)
       board.piece_at(destination) ||
@@ -60,17 +50,19 @@ module Chess
     def capture(board, destination)
       return false unless capturable?(board, destination)
 
-      board.remove_piece(destination)
-      move_to_position(board, destination)
+      capturable_piece = board.piece_at(destination)
+      Move.new(self, position, destination, capturable_piece)
+          .perform(board)
     end
 
     def capture_by_en_passant(board, destination)
       return false unless capturable_by_en_passant?(board, destination)
 
       capture_position = destination - Vector.new(0, legal_y_direction)
-      board.remove_piece(capture_position)
+      capturable_piece = board.piece_at(capture_position)
 
-      move_to_position(board, destination)
+      Move.new(self, position, destination, capturable_piece)
+          .perform(board)
     end
 
     def capturable_by_en_passant?(board, destination)

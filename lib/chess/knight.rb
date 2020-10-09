@@ -35,13 +35,15 @@ module Chess
     def capture(board, destination)
       return false unless capturable?(board, destination)
 
-      board.remove_piece(destination)
-      move_to(board, destination)
+      capturable_piece = board.piece_at(destination)
+      Move.new(self, position, destination, capturable_piece)
+          .perform(board)
     end
 
     def capturable?(board, destination)
       capturable_piece = board.piece_at(destination)
       return false if capturable_piece.nil?
+      return false unless available_destinations.include?(destination)
 
       capturable_piece.color != color
     end

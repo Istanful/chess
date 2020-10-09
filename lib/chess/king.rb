@@ -34,8 +34,8 @@ module Chess
       return false if capturable_piece.nil?
       return false if capturable_piece.color == color
 
-      board.remove_piece(destination)
-      move_to(board, destination)
+      Move.new(self, position, destination, capturable_piece)
+          .perform(board)
     end
 
     def reachable?(destination)

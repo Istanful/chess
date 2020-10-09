@@ -111,9 +111,43 @@ module Chess
           )
         end
       end
+
+      context 'when putting its king in check' do
+        it 'returns a descriptive error' do
+          white_king = King.new(:white, 0, 0)
+          black_rook = Rook.new(:black, 1, 1)
+          board = Board.new [white_king, black_rook]
+          game = described_class.new board
+          game.play('a1-a2')
+
+          text = game.prompt_text
+
+          expect(text).to eql(
+            "Move would put white king in check." +
+            "\nWhite move: "
+          )
+        end
+      end
     end
 
     describe '#play' do
+      context 'when putting its king in check' do
+        it 'does not perform that move' do
+          white_king = King.new(:white, 0, 0)
+          black_bishop = Bishop.new(:black, 0, 1)
+          black_rook = Rook.new(:black, 1, 1)
+          board = Board.new [white_king, black_rook, black_bishop]
+          game = described_class.new board
+          game.play('a1-a2')
+
+          text = game.prompt_text
+
+          expect(board.piece_at(Vector.new(0, 0))).to eql(white_king)
+          expect(board.piece_at(Vector.new(1, 1))).to eql(black_rook)
+          expect(board.piece_at(Vector.new(0, 1))).to eql(black_bishop)
+        end
+      end
+
       context 'when given a valid move' do
         it 'plays the given move' do
           board = Board.new

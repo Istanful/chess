@@ -26,6 +26,13 @@ module Chess
 
         error = "\"#{move_str}\" is not a legal move.\n"
         return MoveMode.new(@game, error) unless successful
+
+        if king_threatened?
+          error = "Move would put #{current_player} king in check.\n"
+          @board.moves.last&.undo(@board)
+          return MoveMode.new(@game, error)
+        end
+
         return PromotionMode.new(@game) if promote_pawn?
 
         @game.switch_player
@@ -33,6 +40,22 @@ module Chess
       end
 
       private
+
+      def king_threatened?
+        king = @board.pieces.find do |piece|
+          piece.color == current_player && piece.kind_of?(King)
+        end
+
+        @board.pieces.any? do |piece|
+          if piece.color != current_player && piece.threatens?(@board, king.position)
+            return true
+          end
+        end
+      end
+
+      def current_player
+        @game.current_player
+      end
 
       def promote_pawn?
         last_piece = @board.moves.last.piece
