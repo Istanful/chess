@@ -37,28 +37,12 @@ module Chess
 
         @game.switch_player
 
-        return FinishMode.new(@game) if lost?
+        return FinishMode.new(@game) if @game.finished?
 
         MoveMode.new(@game)
       end
 
       private
-
-      def lost?
-        return false unless king_threatened?
-
-        pieces = @board.pieces.select { |p| p.color == current_player }
-        pieces.none? do |piece|
-          Board::WIDTH.times.any? do |x|
-            Board::HEIGHT.times.any? do |y|
-              valid_move = piece.move_to(@board, Vector.new(x, y))
-              king_freed = !king_threatened?
-              @board.moves.last&.undo(@board) if valid_move
-              valid_move && king_freed
-            end
-          end
-        end
-      end
 
       def king_threatened?
         king = @board.pieces.find do |piece|
