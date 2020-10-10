@@ -1,8 +1,9 @@
 # Chess
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/chess`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem provides classes for playing the chess game. It also includes a CLI in
+case you want to try it out in the terminal.
 
-TODO: Delete this and the text above, and describe your gem
+![Chess CLI gameplay](cli-gameplay.gif)
 
 ## Installation
 
