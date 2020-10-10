@@ -9,6 +9,9 @@ def prompt(game = Chess::Game.new)
 	print game.prompt_text
 	input = gets&.chomp
 	game.play(input)
+
+	return if game.finished?
+
 	prompt(game)
 rescue Interrupt
 	exit(0)

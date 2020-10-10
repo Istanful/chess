@@ -2,6 +2,7 @@
 
 require "chess/game/move_mode"
 require "chess/game/promotion_mode"
+require "chess/game/finish_mode"
 
 module Chess
   class Game
@@ -12,6 +13,7 @@ module Chess
       @board = board
       @current_player = :white
       @input_mode = MoveMode.new(self)
+      @finished = false
     end
 
     def prompt_text
@@ -22,10 +24,22 @@ module Chess
       @input_mode = @input_mode.play(move_str)
     end
 
-    def switch_player
-      return @current_player = :black if @current_player == :white
+    def finished?
+      @finished
+    end
 
-      @current_player = :white
+    def finish
+      @finished = true
+    end
+
+    def switch_player
+      @current_player = next_player
+    end
+
+    def next_player
+      return :black if @current_player == :white
+
+      :white
     end
   end
 end

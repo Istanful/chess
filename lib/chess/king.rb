@@ -15,10 +15,10 @@ module Chess
     end
 
     def move_to(board, destination)
-      return true if capture(board, destination)
       return true if perform_castling(board, destination)
-      return false if board.piece_at(destination)
       return false if unreachable?(destination)
+      return true if capture(board, destination)
+      return false if board.piece_at(destination)
 
       super(board, destination)
     end

@@ -93,6 +93,20 @@ module Chess
         end
       end
 
+      context 'when given a way too long capturable move' do
+        it 'does not move to that square' do
+          king = described_class.new(:white, 4, 0)
+          rook = Rook.new(:black, 0, 7)
+          board = Board.new [king, rook]
+          destination = Vector.new(0, 7)
+
+          king.move_to(board, destination)
+
+          expect(board.piece_at(Vector.new(4, 0))).to eql(king)
+          expect(board.piece_at(destination)).to eql(rook)
+        end
+      end
+
       context 'when given a capturable move' do
         it 'captures that piece' do
           king = described_class.new(:white, 2, 2)

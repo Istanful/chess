@@ -30,11 +30,27 @@ module Chess
           board = Board.new [pawn]
           game = described_class.new(board)
           game.play('a7-a8')
-          game.play('Q')
 
           text = game.prompt_text
 
           expect(text).to eql('Promote to which piece? [QRBN]: ')
+        end
+      end
+
+      context 'when a pawn is promoted into a checkmate' do
+        it 'finishes the game' do
+          white_pawn = Pawn.new(:white, 6, 6)
+          white_rook = Rook.new(:white, 6, 5)
+          white_king = King.new(:white, 0, 0)
+          black_king = King.new(:black, 7, 7)
+          board = Board.new [white_king, white_pawn, white_rook, black_king]
+          game = described_class.new(board)
+          game.play('g7-g8')
+          game.play('Q')
+
+          text = game.prompt_text
+
+          expect(text).to eql('White won!')
         end
       end
 
@@ -126,6 +142,22 @@ module Chess
             "Move would put white king in check." +
             "\nWhite move: "
           )
+        end
+      end
+
+      context 'when playing a winning move' do
+        it 'finishes the game' do
+          black_king = King.new(:black, 7, 7)
+          white_bishop = Bishop.new(:white, 5, 5)
+          white_queen = Queen.new(:white, 6, 5)
+          white_king = King.new(:white, 0, 0)
+          board = Board.new [black_king, white_bishop, white_queen, white_king]
+          game = described_class.new board
+          game.play('g6-g7')
+
+          text = game.prompt_text
+
+          expect(text).to eql("White won!")
         end
       end
     end

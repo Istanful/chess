@@ -23,10 +23,45 @@ module Chess
         @board.remove_piece(Vector.new(last_piece.x, last_piece.y))
         @board.add_piece(promoted_piece)
         @game.switch_player
-        self
+
+        return FinishMode.new(@game) if lost?
+
+        MoveMode.new(@game)
       end
 
       private
+
+      def lost?
+        return false unless king_threatened?
+
+        pieces = @board.pieces.select { |p| p.color == current_player }
+        pieces.none? do |piece|
+          Board::WIDTH.times.any? do |x|
+            Board::HEIGHT.times.any? do |y|
+              valid_move = piece.move_to(@board, Vector.new(x, y))
+              king_freed = !king_threatened?
+              @board.moves.last&.undo(@board) if valid_move
+              valid_move && king_freed
+            end
+          end
+        end
+      end
+
+      def king_threatened?
+        king = @board.pieces.find do |piece|
+          piece.color == current_player && piece.kind_of?(King)
+        end
+
+        return false if king.nil?
+
+        @board.pieces.any? do |piece|
+          piece.color != current_player && piece.threatens?(@board, king.position)
+        end
+      end
+
+      def current_player
+        @game.current_player
+      end
 
       def validate_input(input)
         return if PieceHelper::PIECE_CLASSES.map(&:notation).include?(input)
