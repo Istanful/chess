@@ -219,20 +219,7 @@ module Chess
 
           game.play('a2-a4')
 
-          expect(board.to_s).to eql(
-            "  abcdefgh  \n" +
-            "            \n" +
-            "8 ♖♘♗♕♔♗♘♖ 8\n" +
-            "7 ♙♙♙♙♙♙♙♙ 7\n" +
-            "6          6\n" +
-            "5          5\n" +
-            "4 ♟        4\n" +
-            "3          3\n" +
-            "2  ♟♟♟♟♟♟♟ 2\n" +
-            "1 ♜♞♝♛♚♝♞♜ 1\n" +
-            "            \n" +
-            "  abcdefgh  \n"
-          )
+          expect(board.piece_at(Vector.new(0, 3))).to be_a_kind_of(Pawn)
         end
       end
 
@@ -245,20 +232,7 @@ module Chess
           game.play('a7-a8')
           game.play('Q')
 
-          expect(board.to_s).to eql(
-            "  abcdefgh  \n" +
-            "            \n" +
-            "8 ♛        8\n" +
-            "7          7\n" +
-            "6          6\n" +
-            "5          5\n" +
-            "4          4\n" +
-            "3          3\n" +
-            "2          2\n" +
-            "1          1\n" +
-            "            \n" +
-            "  abcdefgh  \n"
-          )
+          expect(board.piece_at(Vector.new(0, 7))).to be_a_kind_of(Queen)
         end
       end
     end
