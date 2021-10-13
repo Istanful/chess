@@ -5,26 +5,6 @@ case you want to try it out in the terminal.
 
 ![Chess CLI gameplay](cli-gameplay.gif)
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'chess'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install chess
-
-## Usage
-
-TODO: Write usage instructions here
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
